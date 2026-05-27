@@ -1,0 +1,7 @@
+mpi:
+  - nompi
+  - openmpi
+openmpi:
+  - "5"
+petsc:
+  - "3.25"

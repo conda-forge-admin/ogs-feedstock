@@ -1,4 +1,6 @@
 {% set version = "6.5.8" %}
+{% set mpi = mpi or "nompi" %}
+{% set mpi_prefix = "mpi_" + mpi if mpi != "nompi" else "nompi" %}
 # {% set commit = "3814f0097ca199d43ade2e25654c37abab0f7a9b" %}
 
 package:
@@ -11,7 +13,8 @@ source:
   sha256: f4db3a64abb7832edca46f54d7d5917c9f389be07c137fc92df749d8a44688de
 
 build:
-  number: 0
+  number: {{ 100 if mpi == "nompi" else 1 }}
+  string: {{ mpi_prefix }}_py{{ py }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}
   skip: true  # [win]
   ignore_run_exports:
     - libboost-python
@@ -34,13 +37,20 @@ requirements:
     - llvm-openmp                            # [osx]
     - make                                   # [linux]
     - tbb-devel
-    - openmpi
+{% if mpi != "nompi" %}
+    - {{ mpi }}
     - pkg-config
-    - petsc
+    - petsc * real_*
+{% endif %}
   host:
     - eigen
     - exprtk
-    - hdf5 * mpi_*
+{% if mpi != "nompi" %}
+    - hdf5 * mpi_{{ mpi }}_*
+    - petsc * real_*
+{% else %}
+    - hdf5
+{% endif %}
     - libboost-python-devel
     - libxml2
     - metis
@@ -53,7 +63,6 @@ requirements:
     - zlib
     - mfront 5.1                           # [linux]
     - mgis 3.1                             # [linux]
-    - petsc
   run:
     - tetgen
     - python
@@ -62,9 +71,11 @@ requirements:
     - tbb
     # Hidden OgsXdmfCore dependency?
     - libtiff
-    - openmpi
-    - petsc
-    - hdf5 * mpi_*
+{% if mpi != "nompi" %}
+    - {{ mpi }}
+    - petsc * real_*
+    - hdf5 * mpi_{{ mpi }}_*
+{% endif %}
 
 test:
   commands:
