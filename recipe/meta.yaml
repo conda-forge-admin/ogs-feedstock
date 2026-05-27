@@ -38,15 +38,16 @@ requirements:
     - make                                   # [linux]
     - tbb-devel
 {% if mpi != "nompi" %}
-    - openmpi
+    - {{ mpi }}
     - pkg-config
-    - petsc
+    - petsc * real_*
 {% endif %}
   host:
     - eigen
     - exprtk
 {% if mpi != "nompi" %}
     - hdf5 * mpi_{{ mpi }}_*
+    - petsc * real_*
 {% else %}
     - hdf5
 {% endif %}
@@ -62,9 +63,6 @@ requirements:
     - zlib
     - mfront 5.1                           # [linux]
     - mgis 3.1                             # [linux]
-{% if mpi != "nompi" %}
-    - petsc
-{% endif %}
   run:
     - tetgen
     - python
@@ -74,8 +72,8 @@ requirements:
     # Hidden OgsXdmfCore dependency?
     - libtiff
 {% if mpi != "nompi" %}
-    - openmpi
-    - petsc
+    - {{ mpi }}
+    - petsc * real_*
     - hdf5 * mpi_{{ mpi }}_*
 {% endif %}
 
