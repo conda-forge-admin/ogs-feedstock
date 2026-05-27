@@ -24,10 +24,15 @@ tar -xzf 1.4.0-rc2.tar.gz
 rm 1.4.0-rc2.tar.gz
 ls tclap-1.4.0-rc2/include/tclap
 
-export CC="mpicc"
-export CXX="mpicxx"
-export PKG_CONFIG_PATH="${PREFIX}/lib/pkgconfig"
+PETSC_ARGS="-DOGS_USE_PETSC=OFF"
+if [[ "${ogs_petsc:-false}" == "true" ]]; then
+    export CC="mpicc"
+    export CXX="mpicxx"
+    export PKG_CONFIG_PATH="${PREFIX}/lib/pkgconfig"
+    PETSC_ARGS="-DOGS_USE_PETSC=ON"
+fi
 
+rm -rf ../build
 mkdir ../build
 cd ../build
 cmake -LAH -G Ninja ${CMAKE_ARGS} \
@@ -44,9 +49,9 @@ cmake -LAH -G Ninja ${CMAKE_ARGS} \
     -DCONDA_BUILD=ON \
     -DOGS_EIGEN_DYNAMIC_SHAPE_MATRICES=ON \
     -DPython_EXECUTABLE=${PYTHON} \
-    -DOGS_BUILD_PROCESSES=SteadyStateDiffusion \  # TODO: Remove
+    -DOGS_BUILD_PROCESSES=SteadyStateDiffusion \
     ${MFRONT_ARGS} \
-    -DOGS_USE_PETSC=ON \
+    ${PETSC_ARGS} \
     -DTBB_ROOT=${PREFIX} \
     ../work
 
