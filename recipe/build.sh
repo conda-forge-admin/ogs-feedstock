@@ -25,7 +25,7 @@ rm 1.4.0-rc2.tar.gz
 ls tclap-1.4.0-rc2/include/tclap
 
 PETSC_ARGS="-DOGS_USE_PETSC=OFF"
-if [[ "${ogs_petsc:-false}" == "true" ]]; then
+if [[ "${mpi:-nompi}" != "nompi" ]]; then
     export CC="mpicc"
     export CXX="mpicxx"
     export PKG_CONFIG_PATH="${PREFIX}/lib/pkgconfig"
@@ -49,7 +49,6 @@ cmake -LAH -G Ninja ${CMAKE_ARGS} \
     -DCONDA_BUILD=ON \
     -DOGS_EIGEN_DYNAMIC_SHAPE_MATRICES=ON \
     -DPython_EXECUTABLE=${PYTHON} \
-    -DOGS_BUILD_PROCESSES=SteadyStateDiffusion \
     ${MFRONT_ARGS} \
     ${PETSC_ARGS} \
     -DTBB_ROOT=${PREFIX} \
