@@ -29,9 +29,7 @@ mpi:
 mpich:
 - '4'
 openmpi:
-- '4'
-petsc:
-- '3.25'
+- '5'
 pin_run_as_build:
   python:
     min_pin: x.x
