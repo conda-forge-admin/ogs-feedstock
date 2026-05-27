@@ -24,11 +24,15 @@ tar -xzf 1.4.0-rc2.tar.gz
 rm 1.4.0-rc2.tar.gz
 ls tclap-1.4.0-rc2/include/tclap
 
+export CC="mpicc"
+export CXX="mpicxx"
+export PKG_CONFIG_PATH="${PREFIX}/lib/pkgconfig"
+
 mkdir ../build
 cd ../build
 cmake -LAH -G Ninja ${CMAKE_ARGS} \
     -DCMAKE_BUILD_TYPE:STRING=Release \
-    -DCMAKE_PREFIX_PATH=${PREFIX} \
+    -DCMAKE_PREFIX_PATH="${PREFIX}" \
     -D_tclap_include="${PWD}/../work/tclap-1.4.0-rc2/include/tclap" \
     -DCMAKE_INSTALL_PREFIX=$PREFIX \
     -DCMAKE_INSTALL_RPATH=${PREFIX}/lib \
@@ -40,7 +44,9 @@ cmake -LAH -G Ninja ${CMAKE_ARGS} \
     -DCONDA_BUILD=ON \
     -DOGS_EIGEN_DYNAMIC_SHAPE_MATRICES=ON \
     -DPython_EXECUTABLE=${PYTHON} \
+    -DOGS_BUILD_PROCESSES=SteadyStateDiffusion \  # TODO: Remove
     ${MFRONT_ARGS} \
+    -DOGS_USE_PETSC=ON \
     -DTBB_ROOT=${PREFIX} \
     ../work
 

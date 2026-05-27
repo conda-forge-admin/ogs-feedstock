@@ -18,6 +18,8 @@ build:
     - exprtk
     - metis
     - libzlib
+    - libxml2
+    - libxml2-16
 
 requirements:
   build:
@@ -32,10 +34,13 @@ requirements:
     - llvm-openmp                            # [osx]
     - make                                   # [linux]
     - tbb-devel
+    - openmpi
+    - pkg-config
+    - petsc
   host:
     - eigen
     - exprtk
-    - hdf5
+    - hdf5 * mpi_*
     - libboost-python-devel
     - libxml2
     - metis
@@ -44,10 +49,11 @@ requirements:
     - python
     - range-v3
     # - tclap >=1.4.0rc2  # downloaded in build.sh
-    - vtk >=9.3.0
+    # - vtk >=9.3.0
     - zlib
     - mfront 5.1                           # [linux]
     - mgis 3.1                             # [linux]
+    - petsc
   run:
     - tetgen
     - python
@@ -56,6 +62,9 @@ requirements:
     - tbb
     # Hidden OgsXdmfCore dependency?
     - libtiff
+    - openmpi
+    - petsc
+    - hdf5 * mpi_*
 
 test:
   commands:
