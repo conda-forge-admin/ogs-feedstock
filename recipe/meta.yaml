@@ -53,7 +53,7 @@ requirements:
     - tetgen
     - python
     # Python 3.14 no longer propagates this shared library as a direct run requirement.
-    - libpython  # [py>=314]
+    - libpython  # [not win]
     - mfront 5.1                           # [linux]
     - mgis 3.1                             # [linux]
     - tbb
